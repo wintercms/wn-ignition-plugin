@@ -1,0 +1,26 @@
+{
+    "name": "rainlab/ignition-plugin",
+    "description": "Ignition integration for October CMS.",
+    "homepage": "https://github.com/rainlab/ignition-plugin",
+    "type": "october-plugin",
+    "license": "MIT",
+    "keywords": ["october", "ignition", "flare", "flareapp", "laravel", "october cms", "octobercms"],
+    "authors": [
+        {
+            "name": "Luke Towers",
+            "email": "octobercms@luketowers.ca",
+            "homepage": "https://luketowers.ca",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "facade/ignition": "~1.16"
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "facade/ignition"
+            ]
+        }
+    }
+}
