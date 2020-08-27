@@ -41,7 +41,7 @@ class AddOctoberContextData
                 $description .= ' (elevated)';
             }
 
-            $context[$code] = $description;
+            $context['Plugin: ' . $code] = $description;
         }
 
         // Add the October context data to the overal exception context data
