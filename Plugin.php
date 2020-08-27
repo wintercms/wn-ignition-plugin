@@ -4,13 +4,15 @@ use App;
 use Config;
 use System\Classes\PluginBase;
 use Illuminate\Foundation\AliasLoader;
-use RainLab\Ignition\Middleware\AddOctoberInformation;
+use RainLab\Ignition\Middleware\AddOctoberContextData;
 
 /**
  * Ignition Plugin Information File
  */
 class Plugin extends PluginBase
 {
+    public $elevated = true;
+
     /**
      * Returns information about this plugin.
      *
@@ -39,7 +41,7 @@ class Plugin extends PluginBase
             \RainLab\Ignition\Classes\Handler::class
         );
 
-        $this->app->get('flare.client')->registerMiddleware(AddOctoberInformation::class);
+        $this->app->get('flare.client')->registerMiddleware(AddOctoberContextData::class);
     }
 
     /**
