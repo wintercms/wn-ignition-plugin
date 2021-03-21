@@ -1,6 +1,6 @@
-<?php namespace RainLab\Ignition\Classes;
+<?php namespace Winter\Ignition\Classes;
 
-use October\Rain\Foundation\Exception\Handler as ExceptionHandler;
+use Winter\Storm\Foundation\Exception\Handler as ExceptionHandler;
 
 use Exception;
 use Illuminate\Routing\Router;

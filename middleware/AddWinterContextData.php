@@ -1,17 +1,17 @@
-<?php namespace RainLab\Ignition\Middleware;
+<?php namespace Winter\Ignition\Middleware;
 
 use System\Models\Parameter;
 use Facade\FlareClient\Report;
 use System\Models\PluginVersion;
 use System\Classes\PluginManager;
 
-class AddOctoberContextData
+class AddWinterContextData
 {
     public function handle(Report $report, $next)
     {
-        // Initialize the October exception context data
+        // Initialize the Winter exception context data
         $context = [
-            'October Build' => Parameter::get('system::core.build'),
+            'Winter Build' => Parameter::get('system::core.build'),
         ];
 
         // Get the plugins on the system
@@ -29,7 +29,7 @@ class AddOctoberContextData
         // Sort the plugins by code
         ksort($systemPlugins);
 
-        // Attach the plugins to the October context data
+        // Attach the plugins to the Winter context data
         foreach ($systemPlugins as $code => $data) {
             $description = $data['version'] ?? 'Not initialized';
 
@@ -44,7 +44,7 @@ class AddOctoberContextData
             $context['Plugin: ' . $code] = $description;
         }
 
-        // Add the October context data to the overal exception context data
+        // Add the Winter context data to the overal exception context data
         $report->group('env', $context);
 
         return $next($report);

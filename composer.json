@@ -1,23 +1,36 @@
 {
-    "name": "rainlab/ignition-plugin",
-    "description": "Ignition integration for October CMS.",
-    "homepage": "https://github.com/rainlab/ignition-plugin",
-    "type": "october-plugin",
+    "name": "winter/wn-ignition-plugin",
+    "type": "winter-plugin",
+    "description": "Ignition integration for Winter CMS.",
+    "homepage": "https://github.com/wintercms/wn-ignition-plugin",
+    "keywords": ["winter", "ignition", "flare", "flareapp", "laravel", "winter cms", "wintercms"],
     "license": "MIT",
-    "keywords": ["october", "ignition", "flare", "flareapp", "laravel", "october cms", "octobercms"],
     "authors": [
         {
             "name": "Luke Towers",
-            "email": "octobercms@luketowers.ca",
+            "email": "wintercms@luketowers.ca",
             "homepage": "https://luketowers.ca",
+            "role": "Author"
+        },
+        {
+            "name": "Winter CMS Maintainers",
+            "homepage": "https://wintercms.com",
             "role": "Maintainer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/wintercms/wn-ignition-plugin/issues",
+        "discord": "https://discord.gg/D5MFSPH6Ux",
+        "source": "https://github.com/wintercms/wn-ignition-plugin"
+    },
     "require": {
+        "php": ">=7.2",
+        "composer/installers": "~1.0",
         "facade/ignition": "~1.16"
     },
     "extra": {
         "laravel": {
+            "installer-name": "ignition",
             "dont-discover": [
                 "facade/ignition"
             ]

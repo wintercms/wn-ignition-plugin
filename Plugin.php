@@ -1,10 +1,10 @@
-<?php namespace RainLab\Ignition;
+<?php namespace Winter\Ignition;
 
 use App;
 use Config;
 use System\Classes\PluginBase;
 use Illuminate\Foundation\AliasLoader;
-use RainLab\Ignition\Middleware\AddOctoberContextData;
+use Winter\Ignition\Middleware\AddWinterContextData;
 
 /**
  * Ignition Plugin Information File
@@ -38,17 +38,17 @@ class Plugin extends PluginBase
 
         $this->app->singleton(
             \Illuminate\Contracts\Debug\ExceptionHandler::class,
-            \RainLab\Ignition\Classes\Handler::class
+            \Winter\Ignition\Classes\Handler::class
         );
 
-        $this->app->get('flare.client')->registerMiddleware(AddOctoberContextData::class);
+        $this->app->get('flare.client')->registerMiddleware(AddWinterContextData::class);
     }
 
     /**
      * Boots (configures and registers) any packages found within this plugin's packages.load configuration value
      *
      * @see https://luketowers.ca/blog/how-to-use-laravel-packages-in-october-plugins
-     * @author Luke Towers <octobercms@luketowers.ca>
+     * @author Luke Towers <wintercms@luketowers.ca>
      */
     public function bootPackages()
     {
