@@ -29,8 +29,8 @@
         "facade/ignition": "~1.16"
     },
     "extra": {
+        "installer-name": "ignition",
         "laravel": {
-            "installer-name": "ignition",
             "dont-discover": [
                 "facade/ignition"
             ]
