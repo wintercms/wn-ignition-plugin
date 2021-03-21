@@ -23,7 +23,7 @@ class Plugin extends PluginBase
         return [
             'name'        => 'Ignition',
             'description' => 'No description provided yet...',
-            'author'      => 'RainLab',
+            'author'      => 'Winter CMS',
             'icon'        => 'icon-bug'
         ];
     }
