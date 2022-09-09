@@ -26,14 +26,19 @@
     "require": {
         "php": ">=7.2",
         "composer/installers": "~1.0",
-        "facade/ignition": "~1.16"
+        "spatie/laravel-ignition": "^1.4"
     },
     "extra": {
         "installer-name": "ignition",
         "laravel": {
             "dont-discover": [
-                "facade/ignition"
+                "spatie/laravel-ignition"
             ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
         }
     }
 }
