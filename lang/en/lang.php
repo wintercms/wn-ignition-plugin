@@ -2,7 +2,7 @@
 
 return [
     'plugin' => [
-        'name' => 'ignition',
-        'description' => 'No description provided yet...',
+        'name' => 'Ignition',
+        'description' => 'Ignition error page integration for Winter CMS',
     ],
 ];

@@ -1,16 +1,20 @@
 <?php namespace Winter\Ignition;
 
-use Backend;
+use Config;
+use Event;
+use Spatie\LaravelIgnition\Facades\Flare;
 use Spatie\LaravelIgnition\IgnitionServiceProvider;
 use Spatie\LaravelIgnition\Renderers\ErrorPageRenderer;
 use Spatie\LaravelIgnition\Renderers\IgnitionExceptionRenderer;
 use System\Classes\PluginBase;
 
 /**
- * ignition Plugin Information File
+ * Ignition Plugin Information File
  */
 class Plugin extends PluginBase
 {
+    public $elevated = true;
+
     /**
      * Returns information about this plugin.
      */
@@ -29,7 +33,10 @@ class Plugin extends PluginBase
      */
     public function register(): void
     {
-        \App::register(IgnitionServiceProvider::class);
+        if (Config::get('app.debug', false)) {
+            $this->app->register(IgnitionServiceProvider::class);
+            Flare::registerMiddleware(\Winter\Ignition\Middleware\AddWinterContextData::class);
+        }
     }
 
     /**
@@ -37,12 +44,11 @@ class Plugin extends PluginBase
      */
     public function boot(): void
     {
-        \Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
-            /*            error_reporting(E_ALL);
-                        ini_set('display_errors', 1);*/
-
-            $handler = new IgnitionExceptionRenderer(new ErrorPageRenderer());
-            return $handler->render($exception);
-        }, PHP_INT_MAX);
+        if (Config::get('app.debug', false)) {
+            Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
+                $handler = new IgnitionExceptionRenderer(new ErrorPageRenderer());
+                return $handler->render($exception);
+            }, PHP_INT_MAX);
+        }
     }
 }
