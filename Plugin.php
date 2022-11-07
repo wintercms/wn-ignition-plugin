@@ -1,86 +1,48 @@
 <?php namespace Winter\Ignition;
 
-use App;
-use Config;
+use Backend;
+use Spatie\LaravelIgnition\IgnitionServiceProvider;
+use Spatie\LaravelIgnition\Renderers\ErrorPageRenderer;
+use Spatie\LaravelIgnition\Renderers\IgnitionExceptionRenderer;
 use System\Classes\PluginBase;
-use Illuminate\Foundation\AliasLoader;
-use Winter\Ignition\Middleware\AddWinterContextData;
 
 /**
- * Ignition Plugin Information File
+ * ignition Plugin Information File
  */
 class Plugin extends PluginBase
 {
-    public $elevated = true;
-
     /**
      * Returns information about this plugin.
-     *
-     * @return array
      */
-    public function pluginDetails()
+    public function pluginDetails(): array
     {
         return [
-            'name'        => 'Ignition',
-            'description' => 'No description provided yet...',
-            'author'      => 'Winter CMS',
-            'icon'        => 'icon-bug'
+            'name'        => 'winter.ignition::lang.plugin.name',
+            'description' => 'winter.ignition::lang.plugin.description',
+            'author'      => 'winter',
+            'icon'        => 'icon-leaf'
         ];
     }
 
     /**
-     * Runs right before the request route
+     * Register method, called when the plugin is first registered.
      */
-    public function boot()
+    public function register(): void
     {
-        // Setup required packages
-        $this->bootPackages();
-
-        $this->app->singleton(
-            \Illuminate\Contracts\Debug\ExceptionHandler::class,
-            \Winter\Ignition\Classes\Handler::class
-        );
-
-        $this->app->get('flare.client')->registerMiddleware(AddWinterContextData::class);
+        \App::register(IgnitionServiceProvider::class);
     }
 
     /**
-     * Boots (configures and registers) any packages found within this plugin's packages.load configuration value
-     *
-     * @see https://luketowers.ca/blog/how-to-use-laravel-packages-in-october-plugins
-     * @author Luke Towers <wintercms@luketowers.ca>
+     * Boot method, called right before the request route.
      */
-    public function bootPackages()
+    public function boot(): void
     {
-        // Get the namespace of the current plugin to use in accessing the Config of the plugin
-        $pluginNamespace = str_replace('\\', '.', strtolower(__NAMESPACE__));
+        \Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
+            /*            error_reporting(E_ALL);
+                        ini_set('display_errors', 1);*/
 
-        // Instantiate the AliasLoader for any aliases that will be loaded
-        $aliasLoader = AliasLoader::getInstance();
-
-        // Get the packages to boot
-        $packages = Config::get($pluginNamespace . '::config.packages');
-
-        // Boot each package
-        foreach ($packages as $name => $options) {
-            // Setup the configuration for the package, pulling from this plugin's config
-            if (!empty($options['config']) && !empty($options['config_namespace'])) {
-                Config::set($options['config_namespace'], $options['config']);
-            }
-
-            // Register any Service Providers for the package
-            if (!empty($options['providers'])) {
-                foreach ($options['providers'] as $provider) {
-                    App::register($provider);
-                }
-            }
-
-            // Register any Aliases for the package
-            if (!empty($options['aliases'])) {
-                foreach ($options['aliases'] as $alias => $path) {
-                    $aliasLoader->alias($alias, $path);
-                }
-            }
-        }
+            $handler = new IgnitionExceptionRenderer(new ErrorPageRenderer());
+            return $handler->render($exception);
+        }, PHP_INT_MAX);
     }
 }
