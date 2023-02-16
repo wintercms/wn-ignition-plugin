@@ -1,4 +1,6 @@
-<?php namespace Winter\Ignition;
+<?php
+
+namespace Winter\Ignition;
 
 use Config;
 use Event;
@@ -34,21 +36,30 @@ class Plugin extends PluginBase
     public function register(): void
     {
         if (Config::get('app.debug', false)) {
-            $this->app->register(IgnitionServiceProvider::class);
-            Flare::registerMiddleware(\Winter\Ignition\Middleware\AddWinterContextData::class);
+            $this->registerIgnition();
         }
     }
 
     /**
-     * Boot method, called right before the request route.
+     * Register Ignition
      */
-    public function boot(): void
+    protected function registerIgnition(): void
     {
-        if (Config::get('app.debug', false)) {
-            Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
-                $handler = new IgnitionExceptionRenderer(new ErrorPageRenderer());
-                return $handler->render($exception);
-            }, PHP_INT_MAX);
-        }
+        // Mirror the configuration over to the appropriate keys
+        Config::set('ignition', Config::get('winter.ignition::ignition'));
+        Config::set('flare', Config::get('winter.ignition::flare'));
+
+        // Register the package service provider & alias
+        $this->app->register(IgnitionServiceProvider::class);
+        $this->app->alias('Flare', Flare::class);
+
+        // Register the custom Winter context data middleware
+        Flare::registerMiddleware(\Winter\Ignition\Middleware\AddWinterContextData::class);
+
+        // Register the exception handler
+        Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
+            $handler = new IgnitionExceptionRenderer(new ErrorPageRenderer());
+            return $handler->render($exception);
+        }, PHP_INT_MAX);
     }
 }
