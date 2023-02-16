@@ -2,23 +2,29 @@
 
 namespace Winter\Ignition\Middleware;
 
-use Facade\FlareClient\Report;
+use Spatie\FlareClient\Report;
 use System\Classes\PluginManager;
 use System\Models\Parameter;
 use System\Models\PluginVersion;
+use Winter\Storm\Database\Model;
 
 class AddWinterContextData
 {
     public function handle(Report $report, $next)
     {
-        // Initialize the Winter exception context data
-        $context = [
-            'Winter Build' => Parameter::get('system::core.build'),
-        ];
+        $context = [];
+        $pluginVersions = [];
+
+        if (\App::hasDatabase() && Model::getConnectionResolver()) {
+            // Initialize the Winter exception context data
+            $context = [
+                'Winter Build' => Parameter::get('system::core.build'),
+            ];
+            $pluginVersions = PluginVersion::all()->keyBy('code')->all();
+        }
 
         // Get the plugins on the system
         $systemPlugins = [];
-        $pluginVersions = PluginVersion::all()->keyBy('code')->all();
         $availablePlugins = PluginManager::instance()->getAllPlugins();
         foreach ($availablePlugins as $code => $plugin) {
             $systemPlugins[$code] = [
