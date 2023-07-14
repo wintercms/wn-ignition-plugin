@@ -15,13 +15,9 @@ class AddWinterContextData
         $context = [];
         $pluginVersions = [];
 
-        if (\App::hasDatabase() && Model::getConnectionResolver()) {
-            // Initialize the Winter exception context data
-            $context = [
-                'Winter Build' => Parameter::get('system::core.build'),
-            ];
-            $pluginVersions = PluginVersion::all()->keyBy('code')->all();
-        }
+        // Initialize the Winter exception context data
+        $context['Winter Build'] = Parameter::hasDatabaseTable() ? Parameter::get('system::core.build') : 'Not initialized';
+        $pluginVersions = PluginVersion::hasDatabaseTable() ? PluginVersion::all()->keyBy('code')->all() : [];
 
         // Get the plugins on the system
         $systemPlugins = [];
