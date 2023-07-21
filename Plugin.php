@@ -11,6 +11,7 @@ use Spatie\LaravelIgnition\Renderers\ErrorPageRenderer;
 use Spatie\LaravelIgnition\Renderers\IgnitionExceptionRenderer;
 use System\Classes\PluginBase;
 use Winter\Storm\Exception\AjaxException;
+use Winter\Storm\Exception\ApplicationException;
 
 /**
  * Ignition Plugin Information File
@@ -60,8 +61,12 @@ class Plugin extends PluginBase
 
         // Register the exception handler
         Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
-            // Let winter handle rendering AjaxExceptions
-            if (Request::ajax() && $exception instanceof AjaxException) {
+            // Let winter handle rendering AjaxExceptions & ApplicationExceptions
+            if (
+                Request::ajax()
+                && ($exception instanceof AjaxException)
+                || ($exception instanceof ApplicationException)
+            ) {
                 return;
             }
 
