@@ -4,11 +4,13 @@ namespace Winter\Ignition;
 
 use Config;
 use Event;
+use Illuminate\Support\Facades\Request;
 use Spatie\LaravelIgnition\Facades\Flare;
 use Spatie\LaravelIgnition\IgnitionServiceProvider;
 use Spatie\LaravelIgnition\Renderers\ErrorPageRenderer;
 use Spatie\LaravelIgnition\Renderers\IgnitionExceptionRenderer;
 use System\Classes\PluginBase;
+use Winter\Storm\Exception\AjaxException;
 
 /**
  * Ignition Plugin Information File
@@ -58,8 +60,13 @@ class Plugin extends PluginBase
 
         // Register the exception handler
         Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
+            // Let winter handle rendering AjaxExceptions
+            if (Request::ajax() && $exception instanceof AjaxException) {
+                return;
+            }
+
             $handler = new IgnitionExceptionRenderer(new ErrorPageRenderer());
             return $handler->render($exception);
-        }, PHP_INT_MAX);
+        }, PHP_INT_MAX - 20);
     }
 }
