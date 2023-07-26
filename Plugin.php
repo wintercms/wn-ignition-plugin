@@ -61,12 +61,9 @@ class Plugin extends PluginBase
 
         // Register the exception handler
         Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
-            // Let winter handle rendering AjaxExceptions & ApplicationExceptions
-            if (
-                Request::ajax()
-                && ($exception instanceof AjaxException)
-                || ($exception instanceof ApplicationException)
-            ) {
+            // Let winter handle rendering exceptions in AJAX requests
+            // TODO: Check if this still allows reporting of these exceptions to Flare
+            if (Request::ajax()) {
                 return;
             }
 
