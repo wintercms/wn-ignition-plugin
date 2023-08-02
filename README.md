@@ -1,6 +1,8 @@
-# Ignition for Winter CMS
+# Winter.Ignition Plugin
 
-*Adds support for the [Ignition](https://flareapp.io/docs/ignition-for-laravel/installation) error page to Winter CMS*
+Beautiful and useful error pages. Integrates the [Ignition](https://flareapp.io/docs/ignition-for-laravel/installation) error page into Winter CMS.
+
+![ignition](https://flareapp.io/images/docs/ignition.jpg)
 
 ## Installation
 
