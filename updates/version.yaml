@@ -1,1 +1,11 @@
 1.0.1: First version of Ignition
+2.0.0:
+    - Rebrand to Winter.Ignition
+    - Replaced the abandoned facade/ignition dependency with spatie/laravel-ignition
+    - Removed the Ignition\Classes\Handler exception handler, exceptions are now rendered through the exception.beforeRender event instead
+    - Removed Plugin::bootPackages() and the packages configuration array in config/config.php, replaced by mirrored config/ignition.php and config/flare.php files
+    - Added the AddWinterContextData Flare middleware, reporting the Winter build and every installed plugin's version, disabled and elevated state
+    - Ignition is now only registered when app.debug is enabled
+    - Winter now handles rendering all exceptions thrown during AJAX requests
+    - Fixed context data collection when the database is present but not yet initialized
+    - Added a translatable plugin name and description
